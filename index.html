@@ -6,25 +6,63 @@
     <meta name="viewport" content="width=device-width">
     <title>omori</title>
     <link rel="stylesheet" href="assets/style.css">
-    <script src="jquery-3.7.1.min.js"></script>
+    <script src="./jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
     <div class="content">
         <div class="center">
             <div class="image-container">
-                <img src="assets/img/p1.gif" id="image">
+                <img src="assets/img/p8.gif" id="image">
             </div>
             <div class="bottomctl" style="font-size: 30px;">
                 <p style="font-size: 55px; margin: 0;">OMORIBOY</p>
-                <p style="font-size: 30px;">Select language</p>
-                <div class="buttons">
-                    <button onclick="window.location.replace('view/?lang=ru')">RU</button>
-                    <button onclick="window.location.replace('view/?lang=en')">EN</button>
-                </div>
+                <p style="font-size: 30px;" id="heading"></p>
+                <div id="buttons" class="buttons"></div>
             </div>
         </div>
     </div>
+    <script>
+        var confirmed = false
+
+        var warnings = {
+            'en': ["WARNING: Most of the images and/or texts mention NSFW topics. Continue?", "Yes", "No"],
+            'ru': ["ВНИМАНИЕ: Большинство изображений и/или текстов содержит прямые упоминания NSFW-контента. Продолжить?", "Да", "Нет"]
+        }
+
+        function showWarning(l) {
+            $("#buttons").html("")
+            $('#heading').text(warnings[l][0])
+            let yes = $('<button></button>')
+            yes.text(warnings[l][1])
+            yes.on("click", function () { window.open(`view/?lang=${l}`, '_blank').focus() })
+
+            let no = $('<button></button>')
+            no.text(warnings[l][2])
+            no.on("click", function () { showLangs() })
+            $('#buttons').append(yes)
+            $('#buttons').append(no)
+        }
+
+        function showLangs() {
+            $("#buttons").html("")
+            $('#heading').text("Select language")
+            for (let l of Object.keys(warnings)) {
+                let btn = $('<button></button>')
+                btn.text(l.toUpperCase())
+                btn.attr("data-language", l)
+                console.log(btn.attr("data-language"))
+                btn.on("click", function () { showWarning(btn.attr("data-language").toLowerCase()) })
+                $('#buttons').append(btn)
+            }
+        }
+
+        function main() {
+            showLangs()
+        }
+
+        addEventListener("DOMContentLoaded", main)
+    </script>
 </body>
 
 </html>
