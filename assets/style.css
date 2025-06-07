@@ -93,3 +93,7 @@ a {
     font-size: 45px;
     width: 60px;
 }
+
+.buttons button:active {
+    background: #eee;
+}
